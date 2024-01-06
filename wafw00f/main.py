@@ -40,7 +40,7 @@ class WAFW00F(waftoolsengine):
         self.log = logging.getLogger('wafw00f')
         self.attackres = None
         waftoolsengine.__init__(self, target, debuglevel, path, proxies, followredirect, extraheaders)
-        self.knowledge = dict(generic=dict(found=False, reason=''), wafname=list())
+        self.knowledge = dict(generic=dict(found=False, reason=''), wafname=[])
         self.rq = self.normalRequest()
 
     def normalRequest(self):
@@ -132,8 +132,8 @@ class WAFW00F(waftoolsengine):
                     self.log.info('Server returned a different response when request didn\'t contain the User-Agent header.')
                     reason = reasons[4]
                     reason += '\r\n'
-                    reason += 'Normal response code is "%s",' % resp1.status_code
-                    reason += ' while the response code to a modified request is "%s"' % resp3.status_code
+                    reason += f'Normal response code is "{resp1.status_code}",'
+                    reason += f' while the response code to a modified request is "{resp3.status_code}"'
                     self.knowledge['generic']['reason'] = reason
                     self.knowledge['generic']['found'] = True
                     return True
@@ -144,8 +144,8 @@ class WAFW00F(waftoolsengine):
                 self.log.info('Server returned a different response when a XSS attack vector was tried.')
                 reason = reasons[2]
                 reason += '\r\n'
-                reason += 'Normal response code is "%s",' % resp1.status_code
-                reason += ' while the response code to cross-site scripting attack is "%s"' % resp2.status_code
+                reason += f'Normal response code is "{resp1.status_code}",'
+                reason += f' while the response code to cross-site scripting attack is "{resp2.status_code}"'
                 self.knowledge['generic']['reason'] = reason
                 self.knowledge['generic']['found'] = True
                 return xss_url
@@ -156,8 +156,8 @@ class WAFW00F(waftoolsengine):
                 self.log.info('Server returned a different response when a directory traversal was attempted.')
                 reason = reasons[2]
                 reason += '\r\n'
-                reason += 'Normal response code is "%s",' % resp1.status_code
-                reason += ' while the response code to a file inclusion attack is "%s"' % resp2.status_code
+                reason += f'Normal response code is "{resp1.status_code}",'
+                reason += f' while the response code to a file inclusion attack is "{resp2.status_code}"'
                 self.knowledge['generic']['reason'] = reason
                 self.knowledge['generic']['found'] = True
                 return lfi_url
@@ -168,8 +168,8 @@ class WAFW00F(waftoolsengine):
                 self.log.info('Server returned a different response when a SQLi was attempted.')
                 reason = reasons[2]
                 reason += '\r\n'
-                reason += 'Normal response code is "%s",' % resp1.status_code
-                reason += ' while the response code to a SQL injection attack is "%s"' % resp2.status_code
+                reason += f'Normal response code is "{resp1.status_code}",'
+                reason += f' while the response code to a SQL injection attack is "{resp2.status_code}"'
                 self.knowledge['generic']['reason'] = reason
                 self.knowledge['generic']['found'] = True
                 return sqli_url
@@ -183,16 +183,15 @@ class WAFW00F(waftoolsengine):
                 attackresponse_server = response.headers.get('Server')
             if attackresponse_server != normalserver:
                 self.log.info('Server header changed, WAF possibly detected')
-                self.log.debug('Attack response: %s' % attackresponse_server)
-                self.log.debug('Normal response: %s' % normalserver)
+                self.log.debug(f'Attack response: {attackresponse_server}')
+                self.log.debug(f'Normal response: {normalserver}')
                 reason = reasons[1]
                 reason += '\r\nThe server header for a normal response is "%s",' % normalserver
-                reason += ' while the server header a response to an attack is "%s",' % attackresponse_server
+                reason += f' while the server header a response to an attack is "{attackresponse_server}",'
                 self.knowledge['generic']['reason'] = reason
                 self.knowledge['generic']['found'] = True
                 return True
 
-        # If at all request doesn't go, press F
         except RequestBlocked:
             self.knowledge['generic']['reason'] = reasons[0]
             self.knowledge['generic']['found'] = True
@@ -200,64 +199,42 @@ class WAFW00F(waftoolsengine):
         return False
 
     def matchHeader(self, headermatch, attack=False):
-        if attack:
-            r = self.attackres
-        else:
-            r = self.rq
+        r = self.attackres if attack else self.rq
         if r is None:
             return
 
         header, match = headermatch
-        headerval = r.headers.get(header)
-        if headerval:
+        if headerval := r.headers.get(header):
             # set-cookie can have multiple headers, python gives it to us
             # concatinated with a comma
-            if header == 'Set-Cookie':
-                headervals = headerval.split(', ')
-            else:
-                headervals = [headerval]
+            headervals = headerval.split(', ') if header == 'Set-Cookie' else [headerval]
             for headerval in headervals:
                 if re.search(match, headerval, re.I):
                     return True
         return False
 
     def matchStatus(self, statuscode, attack=True):
-        if attack:
-            r = self.attackres
-        else:
-            r = self.rq
+        r = self.attackres if attack else self.rq
         if r is None:
             return
-        if r.status_code == statuscode:
-            return True
-        return False
+        return r.status_code == statuscode
 
     def matchCookie(self, match, attack=False):
         return self.matchHeader(('Set-Cookie', match), attack=attack)
 
     def matchReason(self, reasoncode, attack=True):
-        if attack:
-            r = self.attackres
-        else:
-            r = self.rq
+        r = self.attackres if attack else self.rq
         if r is None:
             return
         # We may need to match multiline context in response body
-        if str(r.reason) == reasoncode:
-            return True
-        return False
+        return str(r.reason) == reasoncode
 
     def matchContent(self, regex, attack=True):
-        if attack:
-            r = self.attackres
-        else:
-            r = self.rq
+        r = self.attackres if attack else self.rq
         if r is None:
             return
         # We may need to match multiline context in response body
-        if re.search(regex, r.text, re.I):
-            return True
-        return False
+        return bool(re.search(regex, r.text, re.I))
 
     wafdetections = dict()
 
@@ -270,13 +247,13 @@ class WAFW00F(waftoolsengine):
     checklist += list(set(wafdetections.keys()) - set(checklist))
 
     def identwaf(self, findall=False):
-        detected = list()
+        detected = []
         try:
             self.attackres, xurl = self.performCheck(self.centralAttack)
         except RequestBlocked:
             return detected, None
         for wafvendor in self.checklist:
-            self.log.info('Checking for %s' % wafvendor)
+            self.log.info(f'Checking for {wafvendor}')
             if self.wafdetections[wafvendor](self):
                 detected.append(wafvendor)
                 if not findall:
@@ -287,13 +264,11 @@ class WAFW00F(waftoolsengine):
 def calclogginglevel(verbosity):
     default = 40  # errors are printed out
     level = default - (verbosity * 10)
-    if level < 0:
-        level = 0
+    level = max(level, 0)
     return level
 
 def buildResultRecord(url, waf, evil_url=None):
-    result = {}
-    result['url'] = url
+    result = {'url': url}
     if waf:
         result['detected'] = True
         if waf == 'generic':
@@ -321,17 +296,13 @@ def getTextResults(res=None):
         p = [str(x) for _, x in dk.items()]
         rows.append(p)
     for m in rows:
-        m[1] = '%s (%s)' % (m[1], m[2])
+        m[1] = f'{m[1]} ({m[2]})'
         m.pop()
     defgen = [
-        (max([len(str(row[i])) for row in rows]) + 3)
-        for i in range(len(rows[0]))
+        max(len(str(row[i])) for row in rows) + 3 for i in range(len(rows[0]))
     ]
     rwfmt = "".join(["{:>"+str(dank)+"}" for dank in defgen])
-    textresults = []
-    for row in rows:
-        textresults.append(rwfmt.format(*row))
-    return textresults
+    return [rwfmt.format(*row) for row in rows]
 
 def create_random_param_name(size=8, chars=string.ascii_lowercase):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -345,7 +316,7 @@ def enableStdOut():
 def getheaders(fn):
     headers = {}
     if not os.path.exists(fn):
-        logging.getLogger('wafw00f').critical('Headers file "%s" does not exist!' % fn)
+        logging.getLogger('wafw00f').critical(f'Headers file "{fn}" does not exist!')
         return
     with io.open(fn, 'r', encoding='utf-8') as f:
         for line in f.readlines():

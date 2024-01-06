@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchHeader(('cf-ray', r'.+?')):
         return True
 
-    if self.matchCookie('__cfduid'):
-        return True
-
-    return False
+    return bool(self.matchCookie('__cfduid'))

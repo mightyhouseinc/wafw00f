@@ -14,7 +14,4 @@ def is_waf(self):
     if self.matchContent(r'distilCaptchaForm'):
         return True
 
-    if self.matchContent(r'distilCallbackGuard'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'distilCallbackGuard'))

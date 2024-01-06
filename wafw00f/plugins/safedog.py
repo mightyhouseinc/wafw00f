@@ -20,7 +20,6 @@ def is_waf(self):
     if self.matchContent(r'404\.safedog\.cn/sitedog_stat.html'):
         return True
 
-    if self.matchContent(r'404\.safedog\.cn/images/safedogsite/head\.png'):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(r'404\.safedog\.cn/images/safedogsite/head\.png')
+    )

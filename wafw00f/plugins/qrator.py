@@ -8,7 +8,4 @@ NAME = 'Qrator (Qrator)'
 
 
 def is_waf(self):
-    if self.matchHeader(('Server', r'QRATOR')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', r'QRATOR')))

@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchContent(r'firewall.{0,15}?powered.by.{0,15}?malcare.{0,15}?pro'):
         return True
 
-    if self.matchContent('blocked because of malicious activities'):
-        return True
-
-    return False
+    return bool(self.matchContent('blocked because of malicious activities'))

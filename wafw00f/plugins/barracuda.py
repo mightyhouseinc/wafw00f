@@ -20,7 +20,4 @@ def is_waf(self):
     if self.matchCookie(r'^BN[IE]S_.*?='):
         return True
 
-    if self.matchContent(r'Barracuda.Networks'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'Barracuda.Networks'))

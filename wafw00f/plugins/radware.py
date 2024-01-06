@@ -8,23 +8,14 @@ NAME = 'AppWall (Radware)'
 
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 
 def check_schema_01(self):
     if self.matchContent(r'CloudWebSec\.radware\.com'):
         return True
 
-    if self.matchHeader(('X-SL-CompState', '.+')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('X-SL-CompState', '.+')))
 
 
 def check_schema_02(self):
@@ -37,7 +28,4 @@ def check_schema_02(self):
     if not self.matchContent(r'if you believe that there has been some mistake'):
         return False
 
-    if not self.matchContent(r'\?Subject=Security Page.{0,10}?Case Number'):
-        return False
-
-    return True
+    return bool(self.matchContent(r'\?Subject=Security Page.{0,10}?Case Number'))

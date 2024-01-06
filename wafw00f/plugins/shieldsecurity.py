@@ -14,7 +14,8 @@ def is_waf(self):
     if self.matchContent(r"remaining transgression\(s\) against this site"):
         return True
 
-    if self.matchContent(r"Something in the URL.{0,5}?Form or Cookie data wasn\'t appropriate"):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(
+            r"Something in the URL.{0,5}?Form or Cookie data wasn\'t appropriate"
+        )
+    )

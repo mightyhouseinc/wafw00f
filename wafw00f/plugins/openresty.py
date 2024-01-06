@@ -8,30 +8,18 @@ NAME = 'Open-Resty Lua Nginx (FLOSS)'
 
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 
 def check_schema_01(self):
     if not self.matchHeader(('Server', r'^openresty/[0-9\.]+?')):
         return False
 
-    if not self.matchStatus(403):
-        return False
-
-    return True
+    return bool(self.matchStatus(403))
 
 
 def check_schema_02(self):
     if not self.matchContent(r'openresty/[0-9\.]+?'):
         return False
 
-    if not self.matchStatus(406):
-        return False
-
-    return True
+    return bool(self.matchStatus(406))

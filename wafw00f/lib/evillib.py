@@ -32,22 +32,14 @@ proxies = {}
 def urlParser(target):
     log = logging.getLogger('urlparser')
 
-    ssl = False
     o = urlparse(target)
     if o[0] not in ['http', 'https', '']:
-        log.error('scheme %s not supported' % o[0])
+        log.error(f'scheme {o[0]} not supported')
         return
-    if o[0] == 'https':
-        ssl = True
-    if len(o[2]) > 0:
-        path = o[2]
-    else:
-        path = '/'
+    ssl = o[0] == 'https'
+    path = o[2] if len(o[2]) > 0 else '/'
     tmp = o[1].split(':')
-    if len(tmp) > 1:
-        port = tmp[1]
-    else:
-        port = None
+    port = tmp[1] if len(tmp) > 1 else None
     hostname = tmp[0]
     query = o[4]
     return (hostname, port, path, query, ssl)
@@ -63,17 +55,12 @@ class waftoolsengine:
         self.allowredir = redir
         self.proxies = proxies
         self.log = logging.getLogger('wafw00f')
-        if head:
-            self.headers = head
-        else:
-            self.headers = copy(def_headers) #copy object by value not reference. Fix issue #90
+        self.headers = head if head else copy(def_headers)
 
     def Request(self, headers=None, path=None, params={}, delay=0, timeout=7):
         try:
             time.sleep(delay)
-            if not headers:
-                h = self.headers
-            else: h = headers
+            h = self.headers if not headers else headers
             req = requests.get(self.target, proxies=self.proxies, headers=h, timeout=timeout,
                     allow_redirects=self.allowredir, params=params, verify=False)
             self.log.info('Request Succeeded')
@@ -82,4 +69,4 @@ class waftoolsengine:
             self.requestnumber += 1
             return req
         except requests.exceptions.RequestException as e:
-            self.log.error('Something went wrong %s' % (e.__str__()))
+            self.log.error(f'Something went wrong {e.__str__()}')

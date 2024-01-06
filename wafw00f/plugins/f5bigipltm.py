@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchCookie('^bigipserver'):
         return True
 
-    if self.matchHeader(('X-Cnection', 'close'), attack=True):
-        return True
-
-    return False
+    return bool(self.matchHeader(('X-Cnection', 'close'), attack=True))

@@ -8,13 +8,7 @@ NAME = 'wpmudev WAF (Incsub)'
 
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 
 def check_schema_01(self):
@@ -27,10 +21,7 @@ def check_schema_01(self):
     if not self.matchContent(r'Choose your site from the list'):
         return False
 
-    if not self.matchStatus(403):
-        return False
-
-    return True
+    return bool(self.matchStatus(403))
 
 
 def check_schema_02(self):
@@ -43,7 +34,4 @@ def check_schema_02(self):
     if not self.matchContent(r'possible attack on our servers.'):
         return False
 
-    if not self.matchStatus(403):
-        return False
-
-    return True
+    return bool(self.matchStatus(403))

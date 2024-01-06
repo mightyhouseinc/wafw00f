@@ -17,10 +17,7 @@ def is_waf(self):
     if check_schema_03(self):
         return True
 
-    if self.matchHeader((r'[Xx]-[Pp]rotected-[Bb]y', 'shieldon.io')):
-        return True
-
-    return False
+    return bool(self.matchHeader((r'[Xx]-[Pp]rotected-[Bb]y', 'shieldon.io')))
 
 
 def check_schema_01(self):
@@ -33,10 +30,7 @@ def check_schema_01(self):
     if not self.matchContent('Unusual behavior detected'):
         return False
 
-    if not self.matchContent('status-user-info'):
-        return False
-
-    return True
+    return bool(self.matchContent('status-user-info'))
 
 
 def check_schema_02(self):
@@ -46,17 +40,15 @@ def check_schema_02(self):
     if not self.matchContent('The IP address you are using has been blocked.'):
         return False
 
-    if not self.matchContent('status-user-info'):
-        return False
-
-    return True
+    return bool(self.matchContent('status-user-info'))
 
 
 def check_schema_03(self):
     if not self.matchContent('Please line up'):
         return False
 
-    if not self.matchContent('This page is limiting the number of people online. Please wait a moment.'):
-        return False
-
-    return True
+    return bool(
+        self.matchContent(
+            'This page is limiting the number of people online. Please wait a moment.'
+        )
+    )

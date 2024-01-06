@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchContent(r'Download of virus.spyware blocked'):
         return True
 
-    if self.matchContent(r'Palo Alto Next Generation Security Platform'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'Palo Alto Next Generation Security Platform'))

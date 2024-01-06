@@ -8,13 +8,7 @@ NAME = 'Instart DX (Instart Logic)'
 
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 
 def check_schema_01(self):
@@ -24,10 +18,7 @@ def check_schema_01(self):
     if self.matchHeader(('X-Instart-Cache', '.+')):
         return True
 
-    if self.matchHeader(('X-Instart-WL', '.+')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('X-Instart-WL', '.+')))
 
 
 def check_schema_02(self):
@@ -37,7 +28,4 @@ def check_schema_02(self):
     if not self.matchContent(r'please consult with your administrator'):
         return False
 
-    if not self.matchContent(r'your support id is'):
-        return False
-
-    return True
+    return bool(self.matchContent(r'your support id is'))

@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchHeader(('Server', r'ASPA[\-_]?WAF')):
         return True
 
-    if self.matchHeader(('ASPA-Cache-Status', r'.+?')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('ASPA-Cache-Status', r'.+?')))

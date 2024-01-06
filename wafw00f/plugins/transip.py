@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchHeader(('X-TransIP-Backend', '.+')):
         return True
 
-    if self.matchHeader(('X-TransIP-Balancer', '.+')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('X-TransIP-Balancer', '.+')))

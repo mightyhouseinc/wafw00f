@@ -17,7 +17,4 @@ def is_waf(self):
     if not self.matchContent(r"This page can't be displayed"):
         return False
 
-    if not self.matchContent(r'Contact support for additional information'):
-        return False
-
-    return True
+    return bool(self.matchContent(r'Contact support for additional information'))

@@ -20,7 +20,4 @@ def is_waf(self):
     if not self.matchContent(r'requests from spam posting software'):
         return False
 
-    if not self.matchContent(r'<title>403 Access Forbidden'):
-        return False
-
-    return True
+    return bool(self.matchContent(r'<title>403 Access Forbidden'))

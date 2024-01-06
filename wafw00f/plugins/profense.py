@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchHeader(('Server', 'Profense')):
         return True
 
-    if self.matchCookie(r'^PLBSID='):
-        return True
-
-    return False
+    return bool(self.matchCookie(r'^PLBSID='))

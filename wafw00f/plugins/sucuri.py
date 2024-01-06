@@ -32,7 +32,4 @@ def is_waf(self):
     if self.matchContent(r"cdn\.sucuri\.net/sucuri[-_]firewall[-_]block\.css"):
         return True
 
-    if self.matchContent(r'cloudproxy@sucuri\.net'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'cloudproxy@sucuri\.net'))

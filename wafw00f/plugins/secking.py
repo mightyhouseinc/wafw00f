@@ -8,7 +8,4 @@ NAME = 'SecKing (SecKing)'
 
 
 def is_waf(self):
-    if self.matchHeader(('Server', r'secking(.?waf)?')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', r'secking(.?waf)?')))

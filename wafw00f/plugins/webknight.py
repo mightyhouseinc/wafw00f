@@ -11,33 +11,18 @@ def is_waf(self):
     if check_schema_01(self):
         return True
 
-    if check_schema_02(self):
-        return True
-
-    if check_schema_03(self):
-        return True
-
-    return False
+    return True if check_schema_02(self) else bool(check_schema_03(self))
 
 
 def check_schema_01(self):
-    if not self.matchStatus(999):
-        return False
-
-    if not self.matchReason('No Hacking'):
-        return False
-
-    return True
+    return bool(self.matchReason('No Hacking')) if self.matchStatus(999) else False
 
 
 def check_schema_02(self):
     if not self.matchStatus(404):
         return False
 
-    if not self.matchReason('Hack Not Found'):
-        return False
-
-    return True
+    return bool(self.matchReason('Hack Not Found'))
 
 
 def check_schema_03(self):
@@ -56,7 +41,4 @@ def check_schema_03(self):
     if self.matchContent(r'aqtronix\.com/WebKnight'):
         return True
 
-    if self.matchContent(r'AQTRONIX.{0,10}?WebKnight'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'AQTRONIX.{0,10}?WebKnight'))

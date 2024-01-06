@@ -20,7 +20,4 @@ def is_waf(self):
     if not self.matchContent(r'proceed to homepage'):
         return False
 
-    if not self.matchContent(r'reference id'):
-        return False
-
-    return True
+    return bool(self.matchContent(r'reference id'))

@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchHeader(('Server', r'PentaWaf(/[0-9\.]+)?')):
         return True
 
-    if self.matchContent(r'Penta.?Waf/[0-9\.]+?.server'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'Penta.?Waf/[0-9\.]+?.server'))

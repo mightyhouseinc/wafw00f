@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchHeader(('aeSecure-code', '.+?')):
         return True
 
-    if self.matchContent(r'aesecure_denied\.png'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'aesecure_denied\.png'))

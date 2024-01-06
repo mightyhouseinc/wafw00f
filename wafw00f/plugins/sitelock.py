@@ -19,7 +19,4 @@ def is_waf(self):
     if self.matchContent(r"sitelock[_\-]shield([_\-]logo|[\-_]badge)?"):
         return True
 
-    if self.matchContent(r'SiteLock incident ID'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'SiteLock incident ID'))

@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchContent(r'www\.eisoo\.com'):
         return True
 
-    if self.matchContent(r'&copy; \d{4} Eisoo Inc'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'&copy; \d{4} Eisoo Inc'))

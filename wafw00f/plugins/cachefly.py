@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchHeader(('BestCDN', r'Cachefly')):
         return True
 
-    if self.matchCookie(r'^cfly_req.*='):
-        return True
-
-    return False
+    return bool(self.matchCookie(r'^cfly_req.*='))

@@ -7,22 +7,13 @@ See the LICENSE file for copying permission.
 NAME = 'FortiGate (Fortinet)'
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-    
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 def check_schema_01(self):
     if not self.matchContent('//globalurl.fortinet.net'):
         return False
-    
-    if not self.matchContent('FortiGate Application Control'):
-        return False
-    
-    return True
+
+    return bool(self.matchContent('FortiGate Application Control'))
 
 def check_schema_02(self):
     if not self.matchContent('Web Application Firewall'):
@@ -31,7 +22,4 @@ def check_schema_02(self):
     if not self.matchContent('Event ID'):
         return False
 
-    if not self.matchContent('//globalurl.fortinet.net'):
-        return False
-
-    return True
+    return bool(self.matchContent('//globalurl.fortinet.net'))

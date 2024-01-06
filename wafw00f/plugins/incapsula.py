@@ -20,7 +20,4 @@ def is_waf(self):
     if self.matchContent(r'powered by incapsula'):
         return True
 
-    if self.matchContent(r'/_Incapsula_Resource'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'/_Incapsula_Resource'))

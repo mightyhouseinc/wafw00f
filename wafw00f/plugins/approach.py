@@ -12,7 +12,4 @@ def is_waf(self):
     if self.matchContent(r'approach.{0,10}?web application (firewall|filtering)'):
         return True
 
-    if self.matchContent(r'approach.{0,10}?infrastructure team'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'approach.{0,10}?infrastructure team'))

@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchContent(r'powered.by.{0,10}?imunify360'):
         return True
 
-    if self.matchContent(r'imunify360.preloader'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'imunify360.preloader'))

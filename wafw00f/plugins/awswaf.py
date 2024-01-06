@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchCookie(r'^aws.?alb='):
         return True
 
-    if self.matchHeader(('Server', r'aws.?elb'), attack=True):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', r'aws.?elb'), attack=True))

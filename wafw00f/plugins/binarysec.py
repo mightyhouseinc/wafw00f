@@ -14,7 +14,4 @@ def is_waf(self):
     if self.matchHeader(('x-binarysec-via', '.+')):
         return True
 
-    if self.matchHeader(('x-binarysec-nocache', '.+')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('x-binarysec-nocache', '.+')))
