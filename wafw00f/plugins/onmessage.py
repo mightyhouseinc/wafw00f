@@ -20,7 +20,4 @@ def is_waf(self):
     if self.matchContent(r'maintenance\.blackbaud\.com'):
         return True
 
-    if self.matchContent(r'status\.blackbaud\.com'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'status\.blackbaud\.com'))

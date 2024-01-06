@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchContent(r'application error from being viewed remotely (for security reasons)?'):
         return True
 
-    if self.matchContent(r'An application error occurred on the server'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'An application error occurred on the server'))

@@ -23,7 +23,8 @@ def is_waf(self):
     if self.matchContent(r'Cloudbric Help Center'):
         return True
 
-    if self.matchContent(r'malformed request syntax.{0,4}?invalid request message framing.{0,4}?or deceptive request routing'):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(
+            r'malformed request syntax.{0,4}?invalid request message framing.{0,4}?or deceptive request routing'
+        )
+    )

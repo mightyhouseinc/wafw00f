@@ -14,7 +14,4 @@ def is_waf(self):
     if self.matchContent(r"Request denied by WatchGuard Firewall"):
         return True
 
-    if self.matchContent(r'WatchGuard Technologies Inc\.'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'WatchGuard Technologies Inc\.'))

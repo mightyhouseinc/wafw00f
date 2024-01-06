@@ -8,30 +8,18 @@ NAME = 'FirePass (F5 Networks)'
 
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 
 def check_schema_01(self):
     if not self.matchCookie('^VHOST'):
         return False
 
-    if not self.matchHeader(('Location', r'\/my\.logon\.php3')):
-        return False
-
-    return True
+    return bool(self.matchHeader(('Location', r'\/my\.logon\.php3')))
 
 
 def check_schema_02(self):
     if not self.matchCookie(r'^F5_fire.+?'):
         return False
 
-    if not self.matchCookie('^F5_passid_shrinked'):
-        return False
-
-    return True
+    return bool(self.matchCookie('^F5_passid_shrinked'))

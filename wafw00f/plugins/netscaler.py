@@ -30,7 +30,6 @@ def is_waf(self):
     if self.matchHeader(('Cneonction', r'^(keep alive|close)'), attack=True):
         return True
 
-    if self.matchHeader(('nnCoection', r'^(keep alive|close)'), attack=True):
-        return True
-
-    return False
+    return bool(
+        self.matchHeader(('nnCoection', r'^(keep alive|close)'), attack=True)
+    )

@@ -11,7 +11,4 @@ def is_waf(self):
     if self.matchCookie('^ASINFO='):
         return True
 
-    if self.matchHeader(('Server', 'F5-TrafficShield')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', 'F5-TrafficShield')))

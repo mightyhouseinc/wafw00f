@@ -20,7 +20,4 @@ def is_waf(self):
     if self.matchContent(r'notice\-jiasule'):
         return True
 
-    if self.matchContent(r'static\.jiasule\.com'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'static\.jiasule\.com'))

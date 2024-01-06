@@ -23,7 +23,4 @@ def is_waf(self):
     if self.matchContent(r'wangshan\.360\.cn'):
         return True
 
-    if self.matchStatus(493):
-        return True
-
-    return False
+    return bool(self.matchStatus(493))

@@ -14,7 +14,4 @@ def is_waf(self):
     if self.matchContent(r'<title>crawlprotect'):
         return True
 
-    if self.matchContent(r'this site is protected by crawlprotect'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'this site is protected by crawlprotect'))

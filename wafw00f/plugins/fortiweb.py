@@ -8,23 +8,14 @@ NAME = 'FortiWeb (Fortinet)'
 
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 
 def check_schema_01(self):
     if self.matchCookie(r'^FORTIWAFSID='):
         return True
 
-    if self.matchContent('.fgd_icon'):
-        return True
-
-    return False
+    return bool(self.matchContent('.fgd_icon'))
 
 
 def check_schema_02(self):
@@ -43,7 +34,4 @@ def check_schema_02(self):
     if not self.matchContent('message.id'):
         return False
 
-    if not self.matchContent('client.ip'):
-        return False
-
-    return True
+    return bool(self.matchContent('client.ip'))

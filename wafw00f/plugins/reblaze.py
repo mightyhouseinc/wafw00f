@@ -8,23 +8,14 @@ NAME = 'Reblaze (Reblaze)'
 
 
 def is_waf(self):
-    if check_schema_01(self):
-        return True
-
-    if check_schema_02(self):
-        return True
-
-    return False
+    return True if check_schema_01(self) else bool(check_schema_02(self))
 
 
 def check_schema_01(self):
     if self.matchCookie(r'^rbzid'):
         return True
 
-    if self.matchHeader(('Server', 'Reblaze Secure Web Gateway')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', 'Reblaze Secure Web Gateway')))
 
 
 def check_schema_02(self):
@@ -34,7 +25,4 @@ def check_schema_02(self):
     if not self.matchContent(r'do not hesitate to contact us'):
         return False
 
-    if not self.matchContent(r'access denied \(\d{3}\)'):
-        return False
-
-    return True
+    return bool(self.matchContent(r'access denied \(\d{3}\)'))

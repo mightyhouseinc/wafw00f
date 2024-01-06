@@ -20,7 +20,4 @@ def is_waf(self):
         return True
 
     # In-page fingerprints vary a lot in different sites. Hence these are not quite reliable.
-    if self.matchContent(r'invalid get data'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'invalid get data'))

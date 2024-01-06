@@ -26,7 +26,4 @@ def is_waf(self):
     if self.matchContent(r'status\.squarespace\.com'):
         return True
 
-    if self.matchContent(r'BRICK\-\d{2}'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'BRICK\-\d{2}'))

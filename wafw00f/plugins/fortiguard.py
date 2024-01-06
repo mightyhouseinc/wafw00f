@@ -7,10 +7,7 @@ See the LICENSE file for copying permission.
 NAME = 'FortiGuard (Fortinet)'
 
 def is_waf(self):
-    if check_schema(self):
-        return True
-
-    return False
+    return bool(check_schema(self))
 
 def check_schema(self):
     if not self.matchContent('FortiGuard Intrusion Prevention'):
@@ -19,7 +16,4 @@ def check_schema(self):
     if not self.matchContent('//globalurl.fortinet.net'):
         return False
 
-    if not self.matchContent('<title>Web Filter Violation'):
-        return False
-      
-    return True
+    return bool(self.matchContent('<title>Web Filter Violation'))

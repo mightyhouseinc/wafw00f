@@ -12,7 +12,4 @@ def is_waf(self):
     if self.matchHeader(('Server', r'BDWAF')):
         return True
 
-    if self.matchContent(r'bluedon web application firewall'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'bluedon web application firewall'))

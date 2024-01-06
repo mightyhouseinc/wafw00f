@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchContent(r'www\.newdefend\.com/feedback'):
         return True
 
-    if self.matchContent(r'/nd\-block/'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'/nd\-block/'))

@@ -23,7 +23,8 @@ def is_waf(self):
     if self.matchContent(r'yundun\.com/yd[-_]http[_-]error/'):
         return True
 
-    if self.matchContent(r'www\.yundun\.com/(static/js/fingerprint\d{1}?\.js)?'):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(
+            r'www\.yundun\.com/(static/js/fingerprint\d{1}?\.js)?'
+        )
+    )

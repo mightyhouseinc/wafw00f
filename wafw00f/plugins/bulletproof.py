@@ -14,7 +14,4 @@ def is_waf(self):
     if not self.matchContent(r'403 Forbidden Error Page'):
         return False
 
-    if not self.matchContent(r'If you arrived here due to a search'):
-        return False
-
-    return True
+    return bool(self.matchContent(r'If you arrived here due to a search'))

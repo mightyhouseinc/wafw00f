@@ -26,7 +26,8 @@ def is_waf(self):
     if self.matchContent(r"Internet Security by ZScaler"):
         return True
 
-    if self.matchContent(r"Accenture.{0,10}?webfilters indicate that the site likely contains"):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(
+            r"Accenture.{0,10}?webfilters indicate that the site likely contains"
+        )
+    )

@@ -8,7 +8,4 @@ NAME = 'Safeline (Chaitin Tech.)'
 
 
 def is_waf(self):
-    if self.matchContent(r'safeline|<!\-\-\sevent id:'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'safeline|<!\-\-\sevent id:'))

@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchContent(r'broke one of (the )?Wordfence (advanced )?blocking rules'):
         return True
 
-    if self.matchContent(r"/plugins/wordfence"):
-        return True
-
-    return False
+    return bool(self.matchContent(r"/plugins/wordfence"))

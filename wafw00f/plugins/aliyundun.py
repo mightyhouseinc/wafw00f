@@ -17,7 +17,4 @@ def is_waf(self):
     if not self.matchContent(r'Sorry, your request has been blocked as it may cause potential threats to the server\'s security.'):
         return False
 
-    if not self.matchStatus(405):
-        return False
-
-    return True
+    return bool(self.matchStatus(405))

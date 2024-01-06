@@ -26,7 +26,4 @@ def is_waf(self):
     if self.matchContent(r'403 naughty.{0,10}?not nice!'):
         return True
 
-    if self.matchContent(r'varnish cache server'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'varnish cache server'))

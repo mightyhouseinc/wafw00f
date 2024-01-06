@@ -14,7 +14,4 @@ def is_waf(self):
     if self.matchHeader(('X-Powered-By', r'Safe3WAF/[\.0-9]+?')):
         return True
 
-    if self.matchContent(r'Safe3waf/[0-9\.]+?'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'Safe3waf/[0-9\.]+?'))

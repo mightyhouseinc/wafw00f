@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchContent(r'hwclouds\.com'):
         return True
 
-    if self.matchContent(r'hws_security@'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'hws_security@'))

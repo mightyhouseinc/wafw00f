@@ -12,7 +12,4 @@ def is_waf(self):
         return True
 
     # Found samples of DOSArrest returning 'Server: DoSArrest/3.5'
-    if self.matchHeader(('Server', r'DOSarrest(.*)?')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', r'DOSarrest(.*)?')))

@@ -14,7 +14,4 @@ def is_waf(self):
     if self.matchContent(r'astrawebsecurity\.freshdesk\.com'):
         return True
 
-    if self.matchContent(r'www\.getastra\.com/assets/images'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'www\.getastra\.com/assets/images'))

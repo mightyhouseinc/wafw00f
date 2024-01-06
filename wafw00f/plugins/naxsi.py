@@ -17,7 +17,4 @@ def is_waf(self):
     if self.matchContent(r'blocked by naxsi'):
         return True
 
-    if self.matchContent(r'naxsi blocked information'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'naxsi blocked information'))

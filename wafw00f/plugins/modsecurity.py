@@ -11,13 +11,7 @@ def is_waf(self):
     if check_schema_01(self):
         return True
 
-    if check_schema_02(self):
-        return True
-
-    if check_schema_03(self):
-        return True
-
-    return False
+    return True if check_schema_02(self) else bool(check_schema_03(self))
 
 
 def check_schema_01(self):
@@ -39,27 +33,18 @@ def check_schema_01(self):
     if self.matchContent(r'/modsecurity[\-_]errorpage/'):
         return True
 
-    if self.matchContent(r'modsecurity iis'):
-        return True
-
-    return False
+    return bool(self.matchContent(r'modsecurity iis'))
 
 
 def check_schema_02(self):
     if not self.matchReason('ModSecurity Action'):
         return False
 
-    if not self.matchStatus(403):
-        return False
-
-    return True
+    return bool(self.matchStatus(403))
 
 
 def check_schema_03(self):
     if not self.matchReason('ModSecurity Action'):
         return False
 
-    if not self.matchStatus(406):
-        return False
-
-    return True
+    return bool(self.matchStatus(406))

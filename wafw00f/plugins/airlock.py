@@ -12,7 +12,6 @@ def is_waf(self):
     if self.matchCookie(r'^al[_-]?(sess|lb)='):
         return True
 
-    if self.matchContent(r'server detected a syntax error in your request'):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(r'server detected a syntax error in your request')
+    )

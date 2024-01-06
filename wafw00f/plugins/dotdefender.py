@@ -14,7 +14,8 @@ def is_waf(self):
     if self.matchContent(r'dotdefender blocked your request'):
         return True
 
-    if self.matchContent(r'Applicure is the leading provider of web application security'):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(
+            r'Applicure is the leading provider of web application security'
+        )
+    )

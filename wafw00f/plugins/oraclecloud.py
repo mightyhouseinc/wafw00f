@@ -14,7 +14,8 @@ def is_waf(self):
     if self.matchContent(r'src=\"/oralogo_small\.gif\"'):
         return True
 
-    if self.matchContent(r'www\.oracleimg\.com/us/assets/metrics/ora_ocom\.js'):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(
+            r'www\.oracleimg\.com/us/assets/metrics/ora_ocom\.js'
+        )
+    )

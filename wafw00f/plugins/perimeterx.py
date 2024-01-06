@@ -14,7 +14,8 @@ def is_waf(self):
     if self.matchContent(r'client\.perimeterx\.(net|com)'):
         return True
 
-    if self.matchContent(r'denied because we believe you are using automation tools'):
-        return True
-
-    return False
+    return bool(
+        self.matchContent(
+            r'denied because we believe you are using automation tools'
+        )
+    )

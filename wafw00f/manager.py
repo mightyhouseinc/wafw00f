@@ -20,8 +20,7 @@ def load_plugins():
         searchpath=[plugin_dir], persist=True
     )
 
-    plugin_dict = {}
-    for plugin_name in plugin_source.list_plugins():
-        plugin_dict[plugin_name] = plugin_source.load_plugin(plugin_name)
-
-    return plugin_dict
+    return {
+        plugin_name: plugin_source.load_plugin(plugin_name)
+        for plugin_name in plugin_source.list_plugins()
+    }

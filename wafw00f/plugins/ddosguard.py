@@ -20,7 +20,4 @@ def is_waf(self):
     if self.matchCookie(r'^__ddgmark.*?='):
         return True
 
-    if self.matchHeader(('Server', 'ddos-guard')):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', 'ddos-guard')))

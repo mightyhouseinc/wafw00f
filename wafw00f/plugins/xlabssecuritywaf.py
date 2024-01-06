@@ -14,7 +14,4 @@ def is_waf(self):
     if self.matchHeader(('Secured', r'^By XLabs Security')):
         return True
 
-    if self.matchHeader(('Server', r'XLabs[-_]?.?WAF'), attack=True):
-        return True
-
-    return False
+    return bool(self.matchHeader(('Server', r'XLabs[-_]?.?WAF'), attack=True))
